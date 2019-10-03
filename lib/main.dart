@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 void main() {
   runApp(
-    MaterialApp(home: DicePage()),
+    MaterialApp(home: MyApp()),
   );
 }
 
-class DicePage extends StatelessWidget {
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  int leftDiceNumber = 1;
+  int rightDiceNumber = 1;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -15,25 +23,55 @@ class DicePage extends StatelessWidget {
         title: Text('Roll the Dice'),
         backgroundColor: Colors.red,
       ),
-      body: Row(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Container(
-            padding: EdgeInsets.all(10.0),
-            child: Image(
-              width: 180,
-              image: AssetImage('assets/dice1.png'),
+      body: Center(
+        child: Row(
+//          crossAxisAlignment: CrossAxisAlignment.stretch,
+//          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Expanded(
+              flex: 1,
+              child: FlatButton(
+                child: Image(
+//                width: 180,
+                  image: AssetImage('assets/dice$leftDiceNumber.png'),
+                ),
+                onPressed: () {
+                  setState(() {
+                    leftDiceNumber = 1 + Random().nextInt(6);
+                    rightDiceNumber = 1 + Random().nextInt(6);
+                  });
+                  print("Left dice pressed");
+                },
+              ),
             ),
-          ),
-          Container(
-            padding: EdgeInsets.all(10.0),
-            child: Image(
-              width: 180,
-              image: AssetImage('assets/dice3.png'),
-            ),
-          )
-        ],
+            Expanded(
+              flex: 1,
+              child: FlatButton(
+                child: Image(
+//                width: 180,
+                  image: AssetImage('assets/dice$rightDiceNumber.png'),
+                ),
+                onPressed: () {
+                  print("Right dice  pressed");
+                  setState(() {
+                    leftDiceNumber = 1 + Random().nextInt(6);
+                    rightDiceNumber = 1 + Random().nextInt(6);
+                  });
+                },
+              ),
+            )
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.redAccent.shade100,
+        child: Icon(Icons.refresh),
+        onPressed: () {
+          setState(() {
+            leftDiceNumber = 1 + Random().nextInt(6);
+            rightDiceNumber = 1 + Random().nextInt(6);
+          });
+        },
       ),
     );
   }
